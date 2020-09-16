@@ -1,0 +1,31 @@
+---
+title: "Week 2 Course Project"
+author: "Ian Robinson"
+date: "9/15/2020"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Peer Graded Assignment 9/15/2020
+### Top 5 Energy Users in City of Seattle
+
+```{r pressure}
+suppressMessages(library(dplyr))
+mydata <- read.csv('2017_Building_Energy_Benchmarking (1).csv') 
+mydata <-  mydata %>% filter(Outlier=="")
+top5 <- mydata[order(mydata$SiteEnergyUse.kBtu.,decreasing=TRUE),][1:5,]
+df <- data.frame(lat=top5$Latitude,lng=top5$Longitude)
+extras <- data.frame(energy=top5$SiteEnergyUse.kBtu., 
+                     site = paste('<p>',top5$PropertyName,'</p>'),
+                     type = as.factor(top5$PrimaryPropertyType))
+library(leaflet)
+my_map <- df %>% 
+  leaflet() %>% 
+  addTiles() %>%
+  addCircleMarkers(weight = 1, radius = sqrt(extras$energy) / 600,popup = extras$site)
+my_map
+```
+

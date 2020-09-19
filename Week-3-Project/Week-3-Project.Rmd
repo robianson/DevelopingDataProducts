@@ -1,0 +1,27 @@
+---
+title: "Week 3 Project"
+author: "Ian Robinson"
+date: "9/19/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Seattle Energy Use Boxplot
+
+The following plot shows a boxplot of the energy use intensity of buildings in the city of Seattle by primary use type for the year 2017. Data from https://data.seattle.gov/dataset/2017-Building-Energy-Benchmarking/qxjw-iwsh/data. Some use types have outliers above 500, however the y axis maximum is set to 500 for easier reading. 
+
+```{r makeplot, echo=TRUE,warning=FALSE}
+suppressMessages(library(dplyr))
+suppressMessages(library(plotly))
+suppressMessages(library(RColorBrewer))
+energy <- read.csv('2017_Building_Energy_Benchmarking (1).csv')
+plotdata <- energy %>% filter(Outlier=="",!is.na(SiteEUI.kBtu.sf.)) %>% select(type=PrimaryPropertyType,EUI=SiteEUI.kBtu.sf.) 
+plotdata$type <-  as.factor(plotdata$type)
+mycolors <- colorRampPalette(brewer.pal(8, "Set2"))(nlevels(plotdata$type))
+fig <- plot_ly(plotdata,y=~EUI,type='box',color=~type,colors=mycolors) %>% layout(title='EUI By Use Type',yaxis=list(title='EUI (kBtu/sf/yr)',range=c(0,500)),showlegend=FALSE)
+fig
+```
+

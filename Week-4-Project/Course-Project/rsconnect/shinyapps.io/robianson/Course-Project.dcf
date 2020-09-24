@@ -1,0 +1,12 @@
+name: Course-Project
+title: Course-Project
+username:
+account: robianson
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2850865
+bundleId: 3651348
+url: https://robianson.shinyapps.io/Course-Project/
+when: 1600672263.73118
+asMultiple: FALSE
+asStatic: FALSE
